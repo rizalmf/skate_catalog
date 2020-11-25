@@ -1,4 +1,4 @@
-# skate_catalog test MVC pattern? lets find out
+# skate_catalog test MVC pattern
 
 A new Flutter project.
 

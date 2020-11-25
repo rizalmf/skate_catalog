@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 //css ;D
-//Dart doesnt have private vars.. maybe i should test bloc than mvc wkwkw
+//Dart doesnt have private vars.. maybe mvc not eficient here?
 class HomeStyle {
   //------------ APPBAR PROPERTIES --------------//
   bool appBarCenterText() {
