@@ -6,19 +6,25 @@ class FullImageController extends AbstractController {
   //contructor
   FullImageController({BuildContext context}) : super(context: context);
 
-  StatelessWidget instance(String typeName, String asset) {
-    return FullImage(typeName: typeName, asset: asset);
+  StatelessWidget instance(String typeName, String asset, Function likeFunc) {
+    return FullImage(
+      typeName: typeName,
+      asset: asset,
+      likeFunc: likeFunc,
+    );
   }
 }
 
 class FullImage extends StatelessWidget {
   final typeName;
   final asset;
+  final likeFunc;
 
-  FullImage({@required this.typeName, @required this.asset});
+  FullImage(
+      {@required this.typeName, @required this.asset, @required this.likeFunc});
 
   @override
   Widget build(BuildContext context) {
-    return FullImageBuilder().build(context, typeName, asset);
+    return FullImageBuilder().build(context, typeName, asset, likeFunc);
   }
 }

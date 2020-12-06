@@ -3,7 +3,7 @@ import 'package:skate_catalog/builder/abstractBuilder.dart';
 
 class FullImageBuilder extends AbstractBuilder {
   //main body
-  Widget build(context, String typeName, String asset) {
+  Widget build(context, String typeName, String asset, Function likeFunc) {
     return GestureDetector(
       child: Center(
         child: Hero(
@@ -12,12 +12,13 @@ class FullImageBuilder extends AbstractBuilder {
         ),
       ),
       onTap: () {
-        this.pop(context);
+        this.pop(context, likeFunc);
       },
     );
   }
 
-  void pop(context) {
+  void pop(context, Function likeFunc) {
+    likeFunc.call();
     Navigator.pop(context);
   }
 }

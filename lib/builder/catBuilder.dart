@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:skate_catalog/builder/abstractBuilder.dart';
 import 'package:skate_catalog/builder/style/catStyle.dart';
 import 'package:skate_catalog/controller/fullImageController.dart';
@@ -29,28 +30,11 @@ class CatBuilder extends AbstractBuilder {
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: cat.imgAssets.map((url) {
-          return GestureDetector(
-            child: Padding(
-              padding: EdgeInsets.all(CatStyle().paddingCatImage()),
-              child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(CatStyle().circularImageRadius()),
-                child: Image.asset(url),
-              ),
-            ),
-            onTap: () {
-              this.push(context, cat.skateType.name, url);
-            },
-          );
+          bool like = false;
+          return Likes(like: like, url: url, cat: cat);
         }).toList(),
       ),
     );
-  }
-
-  void push(context, typeName, asset) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return FullImageController().instance(typeName, asset);
-    }));
   }
 
   Widget buildTypeInformation(SkateType type) {
@@ -84,5 +68,64 @@ class CatBuilder extends AbstractBuilder {
         textAlign: TextAlign.justify,
       ),
     );
+  }
+}
+
+class Likes extends StatefulWidget {
+  final like;
+  final cat;
+  final url;
+
+  Likes({@required this.like, @required this.cat, @required this.url});
+
+  @override
+  _LikesState createState() => _LikesState(like: like, url: url, cat: cat);
+}
+
+class _LikesState extends State<Likes> {
+  bool like;
+  final cat;
+  final url;
+
+  _LikesState({@required this.like, @required this.cat, @required this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Padding(
+        padding: EdgeInsets.all(CatStyle().paddingCatImage()),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(CatStyle().circularImageRadius()),
+              child: Image.asset(url),
+            ),
+            LikeButton(
+              isLiked: like,
+              size: 85,
+            )
+          ],
+        ),
+      ),
+      onTap: () {
+        this.push(context, cat.skateType.name, url, like);
+      },
+    );
+  }
+
+  void push(context, typeName, asset, like) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return FullImageController().instance(typeName, asset, togleLike());
+    }));
+  }
+
+  Function togleLike() {
+    return () {
+      setState(() {
+        like = !like;
+      });
+    };
   }
 }
